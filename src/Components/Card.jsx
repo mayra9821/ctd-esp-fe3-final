@@ -1,22 +1,23 @@
 import React from "react";
+import { Button, Card } from "react-bootstrap";
 
-
-const Card = ({ name, username, id }) => {
-
-  const addFav = ()=>{
+const CardComp = ({ name = "hola", username, id }) => {
+  const addFav = () => {
     // Aqui iria la logica para agregar la Card en el localStorage
-  }
+  };
 
   return (
-    <div className="card">
-        {/* En cada card deberan mostrar en name - username y el id */}
-
-        {/* No debes olvidar que la Card a su vez servira como Link hacia la pagina de detalle */}
-
-        {/* Ademas deberan integrar la logica para guardar cada Card en el localStorage */}
-        <button onClick={addFav} className="favButton">Add fav</button>
-    </div>
+    <Card key={id}>
+      <Card.Img variant="top" src="images/doctor.jpg" />
+      <Card.Body>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>Text</Card.Text>
+        <Button onClick={addFav} className="favButton">
+          ⭐ Add favorite
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default Card;
+export default CardComp;
