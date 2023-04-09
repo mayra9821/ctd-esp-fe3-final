@@ -20,11 +20,11 @@ const favsInitial = [];
 function themeReducer(state, action) {
   switch (action.type) {
     case "TOOGLE": {
-      if (state==THEMES.DARKSIDE){
-        return THEMES.LIGTHSIDE
+      if (state == THEMES.DARKSIDE) {
+        return THEMES.LIGTHSIDE;
       }
-      if(state==THEMES.LIGTHSIDE){
-        return THEMES.DARKSIDE
+      if (state == THEMES.LIGTHSIDE) {
+        return THEMES.DARKSIDE;
       }
     }
     case THEMES.LIGTHSIDE: {
@@ -87,7 +87,15 @@ export const ContextProvider = ({ children }) => {
 
   return (
     <ContextGlobal.Provider
-      value={{ dataDocs, FAVS_ACTIONS, favs, dispatchFavs, THEMES, actualTheme, dispatchTheme }}
+      value={{
+        dataDocs,
+        FAVS_ACTIONS,
+        favs,
+        dispatchFavs,
+        THEMES,
+        actualTheme,
+        dispatchTheme,
+      }}
     >
       {children}
     </ContextGlobal.Provider>
