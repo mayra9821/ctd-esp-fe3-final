@@ -10,23 +10,20 @@ const FAVS_ACTIONS = {
   LIST: "LIST",
 };
 const THEMES = {
-  DARKSIDE: "DARKSIDE",
-  LIGTHSIDE: "LIGTHSIDE",
+  DARKSIDE: "dark",
+  LIGTHSIDE: "primary",
 };
 
-const themeInitial = LIGTHSIDE;
+const themeInitial = THEMES.LIGTHSIDE;
 const favsInitial = [];
+
+// Guardar cambios en localStorage
+const updLocStrgFavorites = (favorites) => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
 
 function themeReducer(state, action) {
   switch (action.type) {
-    case "TOOGLE": {
-      if (state == THEMES.DARKSIDE) {
-        return THEMES.LIGTHSIDE;
-      }
-      if (state == THEMES.LIGTHSIDE) {
-        return THEMES.DARKSIDE;
-      }
-    }
     case THEMES.LIGTHSIDE: {
       return THEMES.LIGTHSIDE;
     }
@@ -42,15 +39,15 @@ function themeReducer(state, action) {
 const favoritesReducer = (state = favsInitial, action) => {
   switch (action.type) {
     case FAVS_ACTIONS.ADD:
-      const isPersonInFavorites = state.some(
-        (person) => person.id === action.payload.id
-      );
-      if (isPersonInFavorites) {
+      if (state.some((person) => person.id === action.payload.id)) {
         throw new Error(
           `Person with id ${action.payload.id} is already in favorites list`
         );
       }
-      return [...state, action.payload];
+      const newFavorites = [...state, action.payload];
+      updLocStrgFavorites(newFavorites);
+      return newFavorites;
+
     case FAVS_ACTIONS.REMOVE:
       const personIndex = state.findIndex(
         (person) => person.id === action.payload.id
@@ -60,7 +57,12 @@ const favoritesReducer = (state = favsInitial, action) => {
           `Person with id ${action.payload.id} is not in favorites list`
         );
       }
-      return [...state.slice(0, personIndex), ...state.slice(personIndex + 1)];
+      const updatedFavorites = [
+        ...state.slice(0, personIndex),
+        ...state.slice(personIndex + 1),
+      ];
+      updLocStrgFavorites(updatedFavorites);
+      return updatedFavorites;
     default:
       return state;
   }
@@ -71,6 +73,14 @@ export const ContextProvider = ({ children }) => {
   const [dataDocs, setDataDocs] = useState();
   const [favs, dispatchFavs] = useReducer(favoritesReducer, favsInitial);
   const [actualTheme, dispatchTheme] = useReducer(themeReducer, themeInitial);
+
+  useEffect(() => {
+    // Obtener estado inicial de localStorage
+    const initialFavorites = JSON.parse(localStorage.getItem("favorites"));
+    if (initialFavorites) {
+      dispatchFavs({ type: FAVS_ACTIONS.ADD, payload: initialFavorites });
+    }
+  }, []);
 
   useEffect(() => {
     async function getData() {
