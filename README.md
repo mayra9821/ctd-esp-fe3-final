@@ -1,6 +1,6 @@
 # ctd-fe3-final
 
-Examen Final de Frontend III
+Examen Final de Frontend III, Este proyecto se hizo en dupla con la compañera Helena Guerra, con quien se pudo terminar este proyecto de manera exitosa.
 
 ## Indice
 
