@@ -8,21 +8,22 @@ import Row from "react-bootstrap/Row";
 //Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
 const Home = () => {
-  const cards = [1, 2, 3, 4, 5, 6];
-  const { actualTheme } = useContext(ContextGlobal);
+  const { actualTheme, dataDocs } = useContext(ContextGlobal);
+  console.log("🚀 ~ file: Home.jsx:12 ~ Home ~ dataDocs:", dataDocs);
+
   return (
     <Container
       fluid
       as="main"
-      className={`pb-5 bg-${actualTheme} bg-opacity-50`}
+      className={`pb-5 bg-${actualTheme} bg-opacity-75`}
       data-bs-theme={actualTheme}
     >
       <Container data-bs-theme={actualTheme}>
-        <h1 className={`text-dark-emphasis`}>Home</h1>
+        <h1 className={`text-dark-emphasis`}>Inicio</h1>
         <Row className="g-4">
-          {cards.map((card, index) => (
+          {dataDocs.map((doct, index) => (
             <Col>
-              <Card user={card} key={index} />
+              <Card doct={doct} key={index} />
             </Col>
           ))}
         </Row>

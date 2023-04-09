@@ -1,7 +1,5 @@
 import { useReducer, useEffect, useState, createContext } from "react";
 
-export const initialState = { theme: "", data: [] };
-
 export const ContextGlobal = createContext(undefined);
 
 const FAVS_ACTIONS = {
@@ -13,9 +11,7 @@ const THEMES = {
   DARKSIDE: "dark",
   LIGTHSIDE: "primary",
 };
-
-const themeInitial = THEMES.LIGTHSIDE;
-const favsInitial = [];
+export const initialState = { theme: THEMES.LIGTHSIDE, data: [] };
 
 // Guardar cambios en localStorage
 const updLocStrgFavorites = (favorites) => {
@@ -36,15 +32,19 @@ function themeReducer(state, action) {
   }
 }
 
-const favoritesReducer = (state = favsInitial, action) => {
+const favoritesReducer = (state, action) => {
   switch (action.type) {
     case FAVS_ACTIONS.ADD:
-      if (state.some((person) => person.id === action.payload.id)) {
-        throw new Error(
-          `Person with id ${action.payload.id} is already in favorites list`
-        );
-      }
-      const newFavorites = [...state, action.payload];
+      const favorites = state;
+      const newFavorites = favorites.concat(action.payload);
+      console.log(
+        "🚀 ~ file: global.context.jsx:44 ~ favoritesReducer ~ state:",
+        state
+      );
+      console.log(
+        "🚀 ~ file: global.context.jsx:61 ~ favoritesReducer ~ newFavorites:",
+        newFavorites
+      );
       updLocStrgFavorites(newFavorites);
       return newFavorites;
 
@@ -52,11 +52,6 @@ const favoritesReducer = (state = favsInitial, action) => {
       const personIndex = state.findIndex(
         (person) => person.id === action.payload.id
       );
-      if (personIndex === -1) {
-        throw new Error(
-          `Person with id ${action.payload.id} is not in favorites list`
-        );
-      }
       const updatedFavorites = [
         ...state.slice(0, personIndex),
         ...state.slice(personIndex + 1),
@@ -70,17 +65,13 @@ const favoritesReducer = (state = favsInitial, action) => {
 
 export const ContextProvider = ({ children }) => {
   //Aqui deberan implementar la logica propia del Context, utilizando el hook useMemo
-  const [dataDocs, setDataDocs] = useState();
+  const [dataDocs, setDataDocs] = useState(initialState.data);
+  const favsInitial = JSON.parse(localStorage.getItem("favorites"));
   const [favs, dispatchFavs] = useReducer(favoritesReducer, favsInitial);
-  const [actualTheme, dispatchTheme] = useReducer(themeReducer, themeInitial);
-
-  useEffect(() => {
-    // Obtener estado inicial de localStorage
-    const initialFavorites = JSON.parse(localStorage.getItem("favorites"));
-    if (initialFavorites) {
-      dispatchFavs({ type: FAVS_ACTIONS.ADD, payload: initialFavorites });
-    }
-  }, []);
+  const [actualTheme, dispatchTheme] = useReducer(
+    themeReducer,
+    initialState.theme
+  );
 
   useEffect(() => {
     async function getData() {

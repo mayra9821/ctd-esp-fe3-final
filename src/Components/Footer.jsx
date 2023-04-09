@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className={`text-bg-${actualTheme} h-40`} as="footer">
       <p>Powered by </p>
-      <img height="40" src="./images/DH.png" alt="DH-logo" />
+      <img height="40" src="images/DH.png" alt="DH-logo" />
     </footer>
   );
 };

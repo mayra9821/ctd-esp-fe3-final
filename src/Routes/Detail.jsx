@@ -1,18 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ContextGlobal } from "../Components/utils/global.context";
+import DocDetails from "../Components/DocDetails";
 import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
 const Detail = () => {
-  // Consumiendo el parametro dinamico de la URL deberan hacer un fetch a un user en especifico
+  const { id } = useParams();
   const { actualTheme } = useContext(ContextGlobal);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const docts = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${id}`
+        );
+        const user = await docts.json();
+        setUser(user);
+      } catch (e) {
+        console.log("🚀 ~ file: global.context.jsx:34 ~ getData ~ e:", e);
+      }
+      console.log("🚀 ~ file: Detail.jsx:23 ~ getData ~ user:", user);
+    }
+    getData();
+  }, [id, user]);
+
   return (
     <>
-      <h1></h1>
-
       <Container
         fluid
         as="main"
@@ -20,12 +34,16 @@ const Detail = () => {
         data-bs-theme={actualTheme}
       >
         <Container data-bs-theme={actualTheme}>
-          <h1 className={`text-dark-emphasis`}>Detail Dentist id </h1>
-          <Row className="g-4">
-            <Col>
-              <h1>data</h1>
-            </Col>
-          </Row>
+          <h1 className={`text-dark-emphasis`}>Detalles del Dentista{id} </h1>
+          {user && (
+            <>
+              <h1>{user.name}</h1>
+              <DocDetails
+                user={user}
+                theme={actualTheme === "dark" ? actualTheme : "light"}
+              />
+            </>
+          )}
         </Container>
       </Container>
 

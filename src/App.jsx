@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
@@ -22,7 +22,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/favs" element={<Favs />} />
-              <Route path="/details/:id" element={<Details />} />
+              <Route path="/detail/:id" element={<Details />} />
             </Routes>
           </Container>
           <Footer />

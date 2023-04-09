@@ -18,7 +18,12 @@ const NavbarComp = () => {
   };
 
   return (
-    <Navbar bg={`${actualTheme}`} variant={`${actualTheme}`} className="bs-dark-bg-subtle" expand="lg">
+    <Navbar
+      bg={`${actualTheme}`}
+      variant={`${actualTheme}`}
+      className="bs-dark-bg-subtle"
+      expand="lg"
+    >
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img
@@ -35,15 +40,15 @@ const NavbarComp = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">
-              Home
+              Inicio
             </Nav.Link>
             <Nav.Link as={Link} to="/contact">
               {" "}
-              Contact
+              Contacto
             </Nav.Link>{" "}
             <Nav.Link as={Link} to="/favs">
               {" "}
-              Favs
+              Favoritos
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
